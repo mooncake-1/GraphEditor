@@ -46,7 +46,8 @@ namespace GraphEditor
                 {
                     graph = new UndirectedGraph();
                 }
-
+                this.FormBorderStyle = FormBorderStyle.FixedSingle;
+                this.WindowState = FormWindowState.Maximized;
                 InitializePictureBox();
                 InitializeEvents();
             }
@@ -58,6 +59,7 @@ namespace GraphEditor
             {
                 Dock = DockStyle.Fill,
                 BackColor = Color.DarkGray
+
             };
 
             this.Controls.Add(pictureBox);

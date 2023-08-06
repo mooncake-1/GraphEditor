@@ -1,0 +1,32 @@
+Graph Editor and Algorithm Visualizer
+
+1. Description
+The project will be a graph editor combined with an algorithm visualizer. The user will be able to construct a graph using the GUI, and run any of the graph algorithms that will be specified below. 
+When the algorithm is being run, the program will viusalize the procedure of the algorithm and highlight the result path. One additional feature that is considered to be added is to allow the user to benchmark the performence algorithms. 
+
+2. Graph Editor
+The user will be able to create a node, add an edge between nodes; modify the weight of the edge, and name the nodes if they want to.
+
+## Graph Algorithms
+The program will include the most common graph algorithms, mainly the ones taught at the course Algorithms and Data Structures 1, such as 
+- Breadth First Search
+- Depth First Search
+- Dijsktra's Algortihm
+- Topological Sorting for Directed Acyclic Graphs
+- Bellman-Ford Algorithm
+
+3. Technical Details 
+The project will be developed using C# language. The project will be invoked by running the executable file. 
+
+4. User Interface
+The GUI will initialize with a blank canvas, allowing the user to start creating the graph. 
+The user will use their mouse to create/click edges and nodes. If a node is clicked on, the user will name the node; for edges they will assign a weight to it. The initial idea is to have a menu that will have the options to choose which algortihm to run, and to run the algortihm.
+
+5. Libraries and Frameworks 
+The libraries and frameworks that will be used in the project are not yet decided upon, as the need for them may change as the project evolves.The selection of libraries and frameworks will be based on their compatibility with the chosen programming language (C#) and their suitability for implementing the desired features and functionalities of the application.
+
+6. Performance Benchmarking (Not promised)
+The algorithms will be compared on the graph based on their execution time and memory usage. After the round is finished, a table will display the benchmark to the user.
+
+7. Contact and Questions
+For any questions or clarifications, please feel free to contact the project supervisor via email.

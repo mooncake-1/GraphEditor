@@ -57,7 +57,7 @@ namespace GraphEditor
             pictureBox = new PictureBox
             {
                 Dock = DockStyle.Fill,
-                BackColor = Color.MistyRose
+                BackColor = Color.DarkGray
             };
 
             this.Controls.Add(pictureBox);

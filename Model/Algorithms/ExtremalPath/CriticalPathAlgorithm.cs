@@ -98,12 +98,17 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
 
         private void Relax(Vertex u, Vertex v, Graph graph, Dictionary<Vertex, int> distances, Dictionary<Vertex, Vertex> previous)
         {
-            int weight = graph.GetEdge(u, v).Weight;
+            Edge edge = graph.GetEdge(u, v);
+            edge.IsSelected = true; 
+
+            int weight = edge.Weight;
             if (distances[u] != INFINITY && distances[u] + weight < distances[v])
             {
                 distances[v] = distances[u] + weight;
                 previous[v] = u;
             }
+
+            edge.IsSelected = false; 
         }
 
         private List<Vertex> ReconstructPath(Dictionary<Vertex, Vertex> previous, Vertex destination)

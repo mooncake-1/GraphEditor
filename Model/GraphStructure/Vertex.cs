@@ -16,7 +16,7 @@ namespace GraphEditor.Model.GraphStructure
         private readonly int _id;
         private PointF _position;
 
-        public const float RADIUS = 30;
+        public const float RADIUS = 25;
 
         public int ID => _id;
 

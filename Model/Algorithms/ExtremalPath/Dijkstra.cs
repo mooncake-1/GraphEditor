@@ -64,11 +64,14 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             {
                 Vertex current = vertices.Min;
                 vertices.Remove(current);
-                current.Color = VertexColor.Grey; 
+                current.Color = VertexColor.Grey;
 
                 foreach (var neighbor in graph.GetNeighbors(current))
                 {
-                    int edgeWeight = graph.GetEdge(current, neighbor).Weight;
+                    Edge edgeBeingConsidered = graph.GetEdge(current, neighbor);
+                    edgeBeingConsidered.IsSelected = true; 
+
+                    int edgeWeight = edgeBeingConsidered.Weight;
                     int newDistance = distances[current] + edgeWeight;
                     if (newDistance < distances[neighbor])
                     {
@@ -81,9 +84,11 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
                         HighlightShortestPaths(graph, shortestPaths);
                         HighlightAndSleep(graph);
                     }
+
+                    edgeBeingConsidered.IsSelected = false; 
                 }
 
-                current.Color = VertexColor.White; 
+                current.Color = VertexColor.White;
             }
 
             return shortestPaths;

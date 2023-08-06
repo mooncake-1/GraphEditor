@@ -58,6 +58,7 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
                     foreach (var neighbor in graph.GetNeighbors(vertex))
                     {
                         Edge edge = graph.GetEdge(vertex, neighbor);
+                        edge.IsSelected = true;
                         int newDistance = distances[vertex] + edge.Weight;
                         if (newDistance < distances[neighbor])
                         {
@@ -68,11 +69,10 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
                             HighlightShortestPaths(graph, shortestPaths);
                             HighlightAndSleep(graph);
                         }
+                        edge.IsSelected = false;
                     }
                 }
             }
-
-
 
             foreach (var edge in graph.Edges)
             {

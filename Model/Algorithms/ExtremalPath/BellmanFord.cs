@@ -36,6 +36,33 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             OnExtremalPathEvent();
         }
 
+        private void Relax(Vertex vertex, Vertex neighbor, Dictionary<Vertex, int> distances,
+                           Dictionary<Vertex, Vertex> previous, Graph graph, Dictionary<Vertex, List<Vertex>> shortestPaths)
+        {
+            Edge edge = graph.GetEdge(vertex, neighbor);
+            int newDistance = distances[vertex] + edge.Weight;
+            edge.IsSelected = true;
+            if (newDistance < distances[neighbor])
+            {
+                distances[neighbor] = newDistance;
+                previous[neighbor] = vertex;
+                shortestPaths[neighbor] = ReconstructPath(previous, neighbor);
+                HighlightShortestPaths(graph, shortestPaths);
+                HighlightAndSleep(graph);
+            }
+            edge.IsSelected = false;
+        }
+
+        private void CheckForNegativeCycle(Vertex vertex, Vertex neighbor, Dictionary<Vertex, int> distances, Graph graph)
+        {
+            Edge edge = graph.GetEdge(vertex, neighbor);
+            int newDistance = distances[vertex] + edge.Weight;
+            if (newDistance < distances[neighbor])
+            {
+                throw new InvalidOperationException("Graph contains a negative-weight cycle");
+            }
+        }
+
         public Dictionary<Vertex, List<Vertex>> FindShortestPath(Graph graph, Vertex source)
         {
             var distances = InitializeDistances(graph.Vertices, source);
@@ -57,28 +84,18 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
 
                     foreach (var neighbor in graph.GetNeighbors(vertex))
                     {
-                        Edge edge = graph.GetEdge(vertex, neighbor);
-                        edge.IsSelected = true;
-                        int newDistance = distances[vertex] + edge.Weight;
-                        if (newDistance < distances[neighbor])
-                        {
-                            distances[neighbor] = newDistance;
-                            previous[neighbor] = vertex;
-                            shortestPaths[neighbor] = ReconstructPath(previous, neighbor);
-
-                            HighlightShortestPaths(graph, shortestPaths);
-                            HighlightAndSleep(graph);
-                        }
-                        edge.IsSelected = false;
+                        Relax(vertex, neighbor, distances, previous, graph, shortestPaths);
                     }
                 }
             }
 
-            foreach (var edge in graph.Edges)
+            foreach (var vertex in graph.Vertices)
             {
-                if (distances[edge.To] > distances[edge.From] + edge.Weight)
+                if (distances[vertex] == INFINITY) continue;
+
+                foreach (var neighbor in graph.GetNeighbors(vertex))
                 {
-                    throw new InvalidOperationException("Graph contains a negative-weight cycle");
+                    CheckForNegativeCycle(vertex, neighbor, distances, graph);
                 }
             }
 
@@ -88,10 +105,21 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
         private List<Vertex> ReconstructPath(Dictionary<Vertex, Vertex> previous, Vertex destination)
         {
             List<Vertex> path = new List<Vertex>();
+
+            int maxIterations = previous.Count; // safeguard
+            int currentIteration = 0;
+
             for (var vertex = destination; vertex != null; vertex = previous[vertex])
             {
                 path.Insert(0, vertex);
+
+                currentIteration++;
+                if (currentIteration > maxIterations)
+                {
+                    break;
+                }
             }
+
             return path;
         }
 

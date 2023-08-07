@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using GraphEditor.Model.Algorithms.GraphTraversal;
 using GraphEditor.Model.GraphStructure;
 using GraphEditor.Model.Algorithms.ExtremalPath;
+using System.Threading.Tasks;
 
 namespace GraphEditor
 {
@@ -85,7 +86,7 @@ namespace GraphEditor
             }
         }
 
-            private void pictureBox_MouseClick(object sender, MouseEventArgs e)
+        private void pictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -197,7 +198,6 @@ namespace GraphEditor
         #endregion
 
         #region GraphTraversal
-
         private void breadthFirstSearchToolStripMenuItem_Click(object sender, EventArgs e) {}
 
         private void depthFirstSearchToolStripMenuItem_Click(object sender, EventArgs e) {}
@@ -260,7 +260,6 @@ namespace GraphEditor
         }
 
         private void graphTraversalToolStripMenuItem_Click(object sender, EventArgs e) { }
-
         #endregion
 
         #region ExtremalPath
@@ -272,7 +271,7 @@ namespace GraphEditor
 
         private void findShortestPathToolStripMenuItem1_Click(object sender, EventArgs e) => FindShortestPath<CriticalPathAlgorithm>();
 
-        private void FindShortestPath<T>() where T : IExtremalPath, new()
+        private async void FindShortestPath<T>() where T : IExtremalPath, new()
         {
             using (StartVertexSelectionForm startVertexForm = new StartVertexSelectionForm(graph.Vertices))
             {
@@ -285,7 +284,7 @@ namespace GraphEditor
 
                     try
                     {
-                        Dictionary<Vertex, List<Vertex>> shortestPathResult = extremalPathAlgorithm.FindShortestPath(graph, selectedStartVertex);
+                        Dictionary<Vertex, List<Vertex>> shortestPathResult = await Task.Run(() => extremalPathAlgorithm.FindShortestPath(graph, selectedStartVertex));
 
                         extremalPathAlgorithm.HighlightShortestPaths(graph, shortestPathResult);
 
@@ -294,16 +293,30 @@ namespace GraphEditor
                     catch (InvalidOperationException ex)
                     {
                         MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        // Handle the exception here without exiting the application
+                        // This could include logging the error, notifying the user, or taking some other action
                     }
                 }
             }
         }
 
+
+
         private void Algorithm_ExtremalPathEvent(object sender, EventArgs e)
         {
-            pictureBox.Refresh();
-            Application.DoEvents();
+            if (pictureBox.InvokeRequired)
+            {
+                pictureBox.Invoke((MethodInvoker)delegate
+                {
+                    pictureBox.Refresh();
+                });
+            }
+            else
+            {
+                pictureBox.Refresh();
+            }
         }
+
         #endregion
     }
 }

@@ -15,8 +15,8 @@ namespace GraphEditor.Model.GraphStructure
         public int Weight { get => _weight; set => _weight = value; }
         public bool IsDirected { get => _isDirected; }
         public bool IsHighlighted { get; set; }
-
         public bool IsSelected { get; set; }
+        public bool IsCurved { get; set; }
 
         public Edge(Vertex from, Vertex to, int weight, bool isDirected = false)
         {
@@ -33,8 +33,8 @@ namespace GraphEditor.Model.GraphStructure
             Color edgeBorderColor = IsSelected ? Color.Red : Color.Black;
             Color edgeFillColor = IsHighlighted ? Color.Green : Color.Black;
 
-            Pen borderPen = new Pen(edgeBorderColor, 4); 
-            Pen fillPen = new Pen(edgeFillColor, 2);    
+            Pen borderPen = new Pen(edgeBorderColor, 3.75f); 
+            Pen fillPen = new Pen(edgeFillColor, 1.8f);    
 
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
@@ -75,8 +75,6 @@ namespace GraphEditor.Model.GraphStructure
             graphics.DrawLine(pen, midPoint, arrowP1);
             graphics.DrawLine(pen, midPoint, arrowP2);
         }
-
-
 
         private PointF GetMidPoint()
             => new PointF((_from.Position.X + _to.Position.X) / 2, (_from.Position.Y + _to.Position.Y) / 2);

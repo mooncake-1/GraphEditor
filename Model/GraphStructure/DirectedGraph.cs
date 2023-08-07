@@ -14,6 +14,7 @@ namespace GraphEditor.Model.GraphStructure
 
         public override void AddEdge(Vertex from, Vertex to, int weight)
         {
+            bool curveFlag = false;
             if (!_vertices.Contains(from) || !_vertices.Contains(to))
             {
                 throw new ArgumentException("Both 'from' and 'to' vertices must be part of the graph.");
@@ -25,9 +26,17 @@ namespace GraphEditor.Model.GraphStructure
                 {
                     return;
                 }
+                if (edge.From == to && edge.To == from) // Check for reverse edge
+                {
+                    edge.IsCurved = true;
+                    curveFlag = true; // A flag we'll set to true
+                }
             }
 
-            _edges.Add(new Edge(from, to, weight, isDirected: true));
+            Edge newEdge = new Edge(from, to, weight, isDirected: true);
+            newEdge.IsCurved = curveFlag;
+            _edges.Add(newEdge);
+
         }
 
         public override List<Vertex> GetNeighbors(Vertex v) =>

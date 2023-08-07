@@ -10,14 +10,12 @@ namespace GraphEditor.Model.GraphStructure
         protected List<Vertex> _vertices;
         protected List<Edge> _edges;
 
-     
         public Graph()
         {
             _vertices = new List<Vertex>();
             _edges = new List<Edge>();
         }
 
-       
         public List<Vertex> Vertices { get => _vertices; }
 
         public List<Edge> Edges { get => _edges; }

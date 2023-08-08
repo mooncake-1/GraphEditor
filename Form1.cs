@@ -293,8 +293,7 @@ namespace GraphEditor
                     catch (InvalidOperationException ex)
                     {
                         MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        // Handle the exception here without exiting the application
-                        // This could include logging the error, notifying the user, or taking some other action
+             
                     }
                 }
             }

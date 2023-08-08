@@ -1,5 +1,6 @@
 ﻿using GraphEditor.Model.Algorithms.GraphTraversal;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace GraphEditor.Model.GraphStructure
@@ -13,18 +14,11 @@ namespace GraphEditor.Model.GraphStructure
 
     public class Vertex
     {
-        private readonly int _id;
-        private PointF _position;
+        public const float RADIUS = 27.5f;
 
-        public const float RADIUS = 25;
+        public int ID { get; }
 
-        public int ID => _id;
-
-        public PointF Position
-        {
-            get => _position;
-            set => _position = value;
-        }
+        public PointF Position { get; set; }
 
         public int DiscoveryTime { get; set; }
 
@@ -34,30 +28,29 @@ namespace GraphEditor.Model.GraphStructure
 
         public VertexColor Color { get; set; }
 
+        private static readonly Dictionary<VertexColor, Brush> colorMapping = new Dictionary<VertexColor, Brush>
+        {
+            { VertexColor.White, Brushes.LightSkyBlue },
+            { VertexColor.Grey, Brushes.DeepSkyBlue },
+            { VertexColor.Black, Brushes.DodgerBlue }
+        };
+
         public Brush FillColor
         {
             get
             {
-                switch (Color)
-                {
-                    case VertexColor.White:
-                        return Brushes.LightSkyBlue;
-                    case VertexColor.Grey:
-                        return Brushes.DeepSkyBlue;
-                    case VertexColor.Black:
-                        return Brushes.DodgerBlue;
-                    default:
-                        return Brushes.LightSkyBlue;
-                }
+                colorMapping.TryGetValue(Color, out Brush fillBrush);
+                return fillBrush ?? Brushes.LightSkyBlue;
             }
         }
 
         public Vertex(PointF position, int id)
         {
-            _id = id;
-            _position = position;
+            ID = id;
+            Position = position;
             Color = VertexColor.White;
         }
+
         public override string ToString() => $"{ID}";
 
         public void Draw(Graphics graphics)
@@ -67,41 +60,37 @@ namespace GraphEditor.Model.GraphStructure
             Brush vertexFillBrush = FillColor;
             Pen vertexBorderPen = Pens.Black;
 
-            DrawFilledCircle(graphics, vertexFillBrush);
-            DrawCircleBorder(graphics, vertexBorderPen);
+            RectangleF boundingRect = new RectangleF(this.Position.X - RADIUS, this.Position.Y - RADIUS, 2 * RADIUS, 2 * RADIUS);
+
+            DrawFilledCircle(graphics, vertexFillBrush, boundingRect);
+            DrawCircleBorder(graphics, vertexBorderPen, boundingRect);
 
             DrawVertexID(graphics);
         }
 
-        private void DrawFilledCircle(Graphics graphics, Brush fillBrush)
-        {
-            RectangleF boundingRect = new RectangleF(_position.X - RADIUS, _position.Y - RADIUS, 2 * RADIUS, 2 * RADIUS);
-            graphics.FillEllipse(fillBrush, boundingRect);
-        }
-
-        private void DrawCircleBorder(Graphics graphics, Pen borderPen)
-        {
-            RectangleF boundingRect = new RectangleF(_position.X - RADIUS, _position.Y - RADIUS, 2 * RADIUS, 2 * RADIUS);
-            graphics.DrawEllipse(borderPen, boundingRect);
-        }
-
+        private void DrawFilledCircle(Graphics graphics, Brush fillBrush, RectangleF boundingRect) 
+            => graphics.FillEllipse(fillBrush, boundingRect);
+        
+        private void DrawCircleBorder(Graphics graphics, Pen borderPen, RectangleF boundingRect) 
+            => graphics.DrawEllipse(borderPen, boundingRect);
+        
         private void DrawVertexID(Graphics graphics)
         {
-            string nodeIdText = _id.ToString();
+            string nodeIdText = ID.ToString();
             SizeF textSize = graphics.MeasureString(nodeIdText, SystemFonts.DefaultFont);
-            PointF textPosition = new PointF(_position.X - textSize.Width / 2, _position.Y - textSize.Height / 2);
+            PointF textPosition = new PointF(this.Position.X - textSize.Width / 2, this.Position.Y - textSize.Height / 2);
             graphics.DrawString(nodeIdText, SystemFonts.DefaultFont, Brushes.Black, textPosition);
         }
 
         public float GetDistance(Vertex otherVertex) =>
-            (float)Math.Sqrt(Math.Pow(this._position.X - otherVertex._position.X, 2) +
-                Math.Pow(this._position.Y - otherVertex._position.Y, 2));
+            (float)Math.Sqrt(Math.Pow(this.Position.X - otherVertex.Position.X, 2) +
+                Math.Pow(this.Position.Y - otherVertex.Position.Y, 2));
 
         public bool Collides(Vertex otherVertex) => GetDistance(otherVertex) < 2 * RADIUS;
 
         public bool ContainsPoint(PointF point)
         {
-            float distanceSquared = (point.X - _position.X) * (point.X - _position.X) + (point.Y - _position.Y) * (point.Y - _position.Y);
+            float distanceSquared = (point.X - this.Position.X) * (point.X - this.Position.X) + (point.Y - this.Position.Y) * (point.Y - this.Position.Y);
             return distanceSquared <= RADIUS * RADIUS;
         }
     }

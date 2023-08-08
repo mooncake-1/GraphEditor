@@ -37,30 +37,45 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             OnExtremalPathEvent();
         }
 
-        public Dictionary<Vertex, List<Vertex>> FindShortestPath(Graph graph, Vertex source)
+        private void Relax(Vertex u, Vertex v, Graph graph, Dictionary<Vertex, int> distances, Dictionary<Vertex, Vertex> previous)
         {
-            var distances = InitializeDistances(graph.Vertices, source);
-            var previous = new Dictionary<Vertex, Vertex>();
-            var shortestPaths = new Dictionary<Vertex, List<Vertex>>();
+            Edge edge = graph.GetEdge(u, v);
+            edge.IsSelected = true;
 
-            InitializeGraph(graph);
-
-            List<Vertex> topologicalOrder = TopologicalSort(graph);
-
-            foreach (var u in topologicalOrder)
+            if (distances[u] == INFINITY || (int.MaxValue - distances[u]) < edge.Weight)
             {
-                u.Color = VertexColor.Grey;
-                foreach (var v in graph.GetNeighbors(u))
-                {
-                    Relax(u, v, graph, distances, previous);
-                    shortestPaths[v] = ReconstructPath(previous, v);
-                    HighlightShortestPaths(graph, shortestPaths);
-                    HighlightAndSleep(graph);
-                }
-                u.Color = VertexColor.White;
+                return;
             }
 
-            return shortestPaths;
+            int newDistance = checked(distances[u] + edge.Weight);
+
+            if (newDistance < distances[v])
+            {
+                distances[v] = newDistance;
+                previous[v] = u;
+            }
+
+            edge.IsSelected = false;
+        }
+
+        private List<Vertex> ReconstructPath(Dictionary<Vertex, Vertex> previous, Vertex destination)
+        {
+            List<Vertex> path = new List<Vertex>();
+            int maxIterations = previous.Count;
+            int currentIteration = 0;
+
+            for (var vertex = destination; vertex != null; vertex = previous[vertex])
+            {
+                path.Insert(0, vertex);
+
+                currentIteration++;
+                if (currentIteration > maxIterations)
+                {
+                    break;
+                }
+            }
+
+            return path;
         }
 
         private List<Vertex> TopologicalSort(Graph graph)
@@ -92,33 +107,35 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
                     TopologicalSortUtil(neighbor, visited, stack, graph);
                 }
             }
+
             vertex.Color = VertexColor.White;
             stack.Push(vertex);
         }
 
-        private void Relax(Vertex u, Vertex v, Graph graph, Dictionary<Vertex, int> distances, Dictionary<Vertex, Vertex> previous)
+        public Dictionary<Vertex, List<Vertex>> FindShortestPath(Graph graph, Vertex source)
         {
-            Edge edge = graph.GetEdge(u, v);
-            edge.IsSelected = true; 
+            var distances = InitializeDistances(graph.Vertices, source);
+            var previous = new Dictionary<Vertex, Vertex>();
+            var shortestPaths = new Dictionary<Vertex, List<Vertex>>();
 
-            int weight = edge.Weight;
-            if (distances[u] != INFINITY && distances[u] + weight < distances[v])
+            InitializeGraph(graph);
+
+            List<Vertex> topologicalOrder = TopologicalSort(graph);
+
+            foreach (var u in topologicalOrder)
             {
-                distances[v] = distances[u] + weight;
-                previous[v] = u;
+                u.Color = VertexColor.Grey;
+                foreach (var v in graph.GetNeighbors(u))
+                {
+                    Relax(u, v, graph, distances, previous);
+                    shortestPaths[v] = ReconstructPath(previous, v);
+                    HighlightShortestPaths(graph, shortestPaths);
+                    HighlightAndSleep(graph);
+                }
+                u.Color = VertexColor.White;
             }
 
-            edge.IsSelected = false; 
-        }
-
-        private List<Vertex> ReconstructPath(Dictionary<Vertex, Vertex> previous, Vertex destination)
-        {
-            List<Vertex> path = new List<Vertex>();
-            for (var vertex = destination; vertex != null; vertex = previous[vertex])
-            {
-                path.Insert(0, vertex);
-            }
-            return path;
+            return shortestPaths;
         }
 
         public void HighlightShortestPaths(Graph graph, Dictionary<Vertex, List<Vertex>> shortestPaths)

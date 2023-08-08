@@ -33,10 +33,10 @@ namespace GraphEditor.Model.GraphStructure
             Color edgeBorderColor = IsSelected ? Color.Red : Color.Black;
             Color edgeFillColor = IsHighlighted ? Color.Green : Color.Black;
 
-            Pen borderPen = new Pen(edgeBorderColor, 3.75f); 
-            Pen fillPen = new Pen(edgeFillColor, 1.8f);    
+            Pen borderPen = new Pen(edgeBorderColor, 4f); 
+            Pen fillPen = new Pen(edgeFillColor, 1.75f);    
 
-            graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
             if (_isDirected)
             {

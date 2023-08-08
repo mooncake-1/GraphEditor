@@ -11,7 +11,7 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
 
         public event EventHandler ExtremalPathEvent;
 
-        private void InitializeGraph(Graph graph, Vertex source)
+        private void InitializeGraph(Graph graph)
         {
             foreach (Vertex vertex in graph.Vertices)
             {
@@ -30,7 +30,7 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             return distances;
         }
 
-        private void HighlightAndSleep(Graph graph)
+        private void HighlightAndSleep()
         {
             System.Threading.Thread.Sleep(HIGHLIGHT_DURATION_MS);
             OnExtremalPathEvent();
@@ -40,7 +40,13 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
                            Dictionary<Vertex, Vertex> previous, Graph graph, Dictionary<Vertex, List<Vertex>> shortestPaths)
         {
             Edge edge = graph.GetEdge(vertex, neighbor);
-            int newDistance = distances[vertex] + edge.Weight;
+
+            if (distances[vertex] == INFINITY || (int.MaxValue - distances[vertex]) < edge.Weight)
+            {
+                return;
+            }
+
+            int newDistance = checked(distances[vertex] + edge.Weight);
             edge.IsSelected = true;
             if (newDistance < distances[neighbor])
             {
@@ -48,7 +54,7 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
                 previous[neighbor] = vertex;
                 shortestPaths[neighbor] = ReconstructPath(previous, neighbor);
                 HighlightShortestPaths(graph, shortestPaths);
-                HighlightAndSleep(graph);
+                HighlightAndSleep();
             }
             edge.IsSelected = false;
         }
@@ -56,7 +62,7 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
         private void CheckForNegativeCycle(Vertex vertex, Vertex neighbor, Dictionary<Vertex, int> distances, Graph graph)
         {
             Edge edge = graph.GetEdge(vertex, neighbor);
-            int newDistance = distances[vertex] + edge.Weight;
+            int newDistance = distances[vertex] + edge.Weight;  
             if (newDistance < distances[neighbor])
             {
                 throw new InvalidOperationException("Graph contains a negative-weight cycle");
@@ -74,7 +80,7 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
                 previous[vertex] = null;
             }
 
-            InitializeGraph(graph, source);
+            InitializeGraph(graph);
 
             for (int i = 0; i < graph.Vertices.Count - 1; i++)
             {

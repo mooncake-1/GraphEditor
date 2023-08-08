@@ -31,7 +31,7 @@
             // 
             // GraphTypeSelectionForm
             // 
-            this.ClientSize = new System.Drawing.Size(184, 161);
+            this.ClientSize = new System.Drawing.Size(208, 161);
             this.Controls.Add(this.undirectedButton);
             this.Controls.Add(this.directedButton);
             this.Name = "GraphTypeSelectionForm";

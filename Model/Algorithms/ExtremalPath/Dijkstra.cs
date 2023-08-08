@@ -8,7 +8,19 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
     public class DistanceComparer : IComparer<Vertex>
     {
         private Dictionary<Vertex, int> distances;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DistanceComparer"/> class.
+        /// </summary>
+        /// <param name="distances">The distances dictionary used for comparison.</param>
         public DistanceComparer(Dictionary<Vertex, int> distances) => this.distances = distances;
+
+        /// <summary>
+        /// Compares two vertices by their distances.
+        /// </summary>
+        /// <param name="x">The first vertex to compare.</param>
+        /// <param name="y">The second vertex to compare.</param>
+        /// <returns>An integer that indicates their relative values in the sort order.</returns>
         public int Compare(Vertex x, Vertex y) => distances[x].CompareTo(distances[y]);
     }
 
@@ -26,6 +38,12 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
         private Dictionary<Vertex, Vertex> previous;
         private Dictionary<Vertex, List<Vertex>> shortestPaths;
 
+        /// <summary>
+        /// Finds the shortest paths from the source vertex to all other vertices in the graph.
+        /// </summary>
+        /// <param name="graph">The graph to search for the shortest paths.</param>
+        /// <param name="source">The source vertex for the paths.</param>
+        /// <returns>A dictionary mapping vertices to lists of vertices representing the shortest paths to them.</returns>
         public Dictionary<Vertex, List<Vertex>> FindShortestPath(Graph graph, Vertex source)
         {
             Initialize(graph, source);
@@ -142,6 +160,12 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             OnExtremalPathEvent();
         }
 
+        /// <summary>
+        /// Reconstructs the path from the previous vertices dictionary.
+        /// </summary>
+        /// <param name="previous">The previous vertices dictionary.</param>
+        /// <param name="destination">The destination vertex.</param>
+        /// <returns>A list of vertices representing the path.</returns>
         private List<Vertex> ReconstructPath(Dictionary<Vertex, Vertex> previous, Vertex destination)
         {
             List<Vertex> path = new List<Vertex>();
@@ -152,6 +176,11 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             return path;
         }
 
+        /// <summary>
+        /// Highlights the shortest paths that were found in the graph.
+        /// </summary>
+        /// <param name="graph">The graph containing the shortest paths.</param>
+        /// <param name="shortestPaths">A dictionary representing the shortest paths.</param>
         public void HighlightShortestPaths(Graph graph, Dictionary<Vertex, List<Vertex>> shortestPaths)
         {
             graph.ClearHighlighting();
@@ -162,6 +191,11 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             }
         }
 
+        /// <summary>
+        /// Highlights the specified path in the graph.
+        /// </summary>
+        /// <param name="graph">The graph containing the path.</param>
+        /// <param name="path">The list of vertices that form the path to highlight.</param>
         public void HighlightPath(Graph graph, List<Vertex> path)
         {
             for (int i = 0; i < path.Count - 1; i++)
@@ -172,6 +206,9 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="ExtremalPathEvent"/>.
+        /// </summary>
         protected virtual void OnExtremalPathEvent() => ExtremalPathEvent?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -4,11 +4,17 @@ using System.Collections.Generic;
 
 namespace GraphEditor.Model.Algorithms.ExtremalPath
 {
+    /// <summary>
+    /// Implements the Bellman-Ford algorithm to find the shortest paths from a source vertex to all other vertices in a graph.
+    /// </summary>
     public class BellmanFord : IExtremalPath
     {
         private const int INFINITY = int.MaxValue;
         private const int HIGHLIGHT_DURATION_MS = 1500;
 
+        /// <summary>
+        /// Occurs when an extremal path event is triggered.
+        /// </summary>
         public event EventHandler ExtremalPathEvent;
 
         private void InitializeGraph(Graph graph)
@@ -69,6 +75,12 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             }
         }
 
+        /// <summary>
+        /// Finds the shortest paths from the source vertex to all other vertices in the given graph.
+        /// </summary>
+        /// <param name="graph">The graph to search for the shortest paths.</param>
+        /// <param name="source">The source vertex for the paths.</param>
+        /// <returns>A dictionary mapping vertices to lists of vertices representing the shortest paths to them.</returns>
         public Dictionary<Vertex, List<Vertex>> FindShortestPath(Graph graph, Vertex source)
         {
             var distances = InitializeDistances(graph.Vertices, source);
@@ -108,6 +120,12 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             return shortestPaths;
         }
 
+        /// <summary>
+        /// Reconstructs the path from the previous vertices dictionary.
+        /// </summary>
+        /// <param name="previous">The previous vertices dictionary.</param>
+        /// <param name="destination">The destination vertex.</param>
+        /// <returns>A list of vertices representing the path.</returns>
         private List<Vertex> ReconstructPath(Dictionary<Vertex, Vertex> previous, Vertex destination)
         {
             List<Vertex> path = new List<Vertex>();
@@ -129,6 +147,11 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             return path;
         }
 
+        /// <summary>
+        /// Highlights the shortest paths that were found in the graph.
+        /// </summary>
+        /// <param name="graph">The graph containing the shortest paths.</param>
+        /// <param name="shortestPaths">A dictionary representing the shortest paths, as returned by <see cref="FindShortestPath"/>.</param>
         public void HighlightShortestPaths(Graph graph, Dictionary<Vertex, List<Vertex>> shortestPaths)
         {
             graph.ClearHighlighting();
@@ -139,6 +162,11 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             }
         }
 
+        /// <summary>
+        /// Highlights the specified path in the graph.
+        /// </summary>
+        /// <param name="graph">The graph containing the path.</param>
+        /// <param name="path">The list of vertices that form the path to highlight.</param>
         public void HighlightPath(Graph graph, List<Vertex> path)
         {
             for (int i = 0; i < path.Count - 1; i++)
@@ -149,6 +177,9 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="ExtremalPathEvent"/>.
+        /// </summary>
         protected virtual void OnExtremalPathEvent() => ExtremalPathEvent?.Invoke(this, EventArgs.Empty);
     }
 }

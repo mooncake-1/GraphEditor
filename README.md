@@ -9,7 +9,6 @@ GraphEditor is a visual tool designed to create, manipulate, and analyze graphs.
 - **Edge Management:** Drag from one vertex to another to create an edge. Right-click to remove a vertex or an edge.
 - **Weight Modification:** Click on an edge to modify its weight.
 ### 2. Graph Visualization
-- **Canvas Interaction:** Zoom, pan, and interact with the graph in real time.
 - **Visual Feedback:** Real-time updates during graph traversals, showing the current state of the algorithm.
 ### 3. Graph Traversal
 - **Breadth-First Search (BFS):** Apply BFS to traverse the graph.

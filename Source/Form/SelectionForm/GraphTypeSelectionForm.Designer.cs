@@ -13,25 +13,25 @@
             // 
             // directedButton
             // 
-            this.directedButton.Location = new System.Drawing.Point(30, 30);
+            this.directedButton.Location = new System.Drawing.Point(91, 338);
             this.directedButton.Name = "directedButton";
-            this.directedButton.Size = new System.Drawing.Size(120, 30);
+            this.directedButton.Size = new System.Drawing.Size(445, 81);
             this.directedButton.TabIndex = 1;
             this.directedButton.Text = "Directed Graph";
             this.directedButton.Click += new System.EventHandler(this.directedButton_Click);
             // 
             // undirectedButton
             // 
-            this.undirectedButton.Location = new System.Drawing.Point(30, 70);
+            this.undirectedButton.Location = new System.Drawing.Point(91, 185);
             this.undirectedButton.Name = "undirectedButton";
-            this.undirectedButton.Size = new System.Drawing.Size(120, 30);
+            this.undirectedButton.Size = new System.Drawing.Size(445, 81);
             this.undirectedButton.TabIndex = 0;
             this.undirectedButton.Text = "Undirected Graph";
             this.undirectedButton.Click += new System.EventHandler(this.undirectedButton_Click);
             // 
             // GraphTypeSelectionForm
             // 
-            this.ClientSize = new System.Drawing.Size(208, 161);
+            this.ClientSize = new System.Drawing.Size(662, 593);
             this.Controls.Add(this.undirectedButton);
             this.Controls.Add(this.directedButton);
             this.Name = "GraphTypeSelectionForm";

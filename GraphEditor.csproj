@@ -55,13 +55,13 @@
     <Compile Include="Source\Model\Algorithms\ExtremalPath\BellmanFord.cs" />
     <Compile Include="Source\Model\Algorithms\ExtremalPath\CriticalPathAlgorithm.cs" />
     <Compile Include="Source\Model\Algorithms\ExtremalPath\IExtremalPath.cs" />
-    <Compile Include="Source\Form\Selection Forms\GraphTypeSelectionForm.cs">
+    <Compile Include="Source\Form\SelectionForm\GraphTypeSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Source\Form\Selection Forms\GraphTypeSelectionForm.Designer.cs">
+    <Compile Include="Source\Form\SelectionForm\GraphTypeSelectionForm.Designer.cs">
       <DependentUpon>GraphTypeSelectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\Form\Selection Forms\InputDialog.cs" />
+    <Compile Include="Source\Form\SelectionForm\InputDialog.cs" />
     <Compile Include="Source\Model\Algorithms\ExtremalPath\Dijkstra.cs" />
     <Compile Include="Source\Model\Algorithms\GraphTraversal\BreadthFirstSearch.cs" />
     <Compile Include="Source\Model\Algorithms\GraphTraversal\DepthFirstSearch.cs" />
@@ -73,16 +73,16 @@
     <Compile Include="Source\Model\GraphStructure\Vertex.cs" />
     <Compile Include="Source\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Form\Selection Forms\StartVertexSelectionForm.cs">
+    <Compile Include="Source\Form\SelectionForm\StartVertexSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Source\Form\Selection Forms\StartVertexSelectionForm.Designer.cs">
+    <Compile Include="Source\Form\SelectionForm\StartVertexSelectionForm.Designer.cs">
       <DependentUpon>StartVertexSelectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\Form\Selection Forms\VertexSelectionForm.cs">
+    <Compile Include="Source\Form\SelectionForm\VertexSelectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Source\Form\Selection Forms\VertexSelectionForm.Designer.cs">
+    <Compile Include="Source\Form\SelectionForm\VertexSelectionForm.Designer.cs">
       <DependentUpon>VertexSelectionForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Source\Form\MainForm\Form1.resx">
@@ -97,8 +97,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Source\Form\Selection Forms\GraphTypeSelectionForm.resx">
+    <EmbeddedResource Include="Source\Form\SelectionForm\GraphTypeSelectionForm.resx">
       <DependentUpon>GraphTypeSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Source\Form\SelectionForm\VertexSelectionForm.resx">
+      <DependentUpon>VertexSelectionForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

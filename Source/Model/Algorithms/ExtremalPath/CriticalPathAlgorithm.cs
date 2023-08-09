@@ -84,7 +84,7 @@ namespace GraphEditor.Model.Algorithms.ExtremalPath
             int maxIterations = previous.Count;
             int currentIteration = 0;
 
-            for (var vertex = destination; vertex != null; vertex = previous[vertex])
+            for (var vertex = destination; vertex != null; vertex = previous.ContainsKey(vertex) ? previous[vertex] : null)
             {
                 path.Insert(0, vertex);
 

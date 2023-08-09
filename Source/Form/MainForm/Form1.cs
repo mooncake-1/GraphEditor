@@ -299,8 +299,6 @@ namespace GraphEditor
             }
         }
 
-
-
         private void Algorithm_ExtremalPathEvent(object sender, EventArgs e)
         {
             if (pictureBox.InvokeRequired)

@@ -33,6 +33,6 @@ GraphEditor is a visual tool designed to create, manipulate, and analyze graphs.
 - **Right-Click:** Remove a vertex or edge.
 ### Applying Algorithms
   1. **Select Algorithm from Menu:** Choose the desired traversal or pathfinding algorithm from the menu.
-  1. **Select Start Vertex (if required):** Some algorithms such as traversal and shortest path will prompt for a start vertex.
+  1. **Select Start Vertex:** Some algorithms such as traversal and shortest path will prompt for a start vertex.
   1. **Select Start and End Vertex (if required):** For algorithms like checking the path, you will need to select both a start and an end vertex. 
   1. **Observe the Algorithm in Action:** Watch the algorithm traverse the graph and see the results on the canvas.

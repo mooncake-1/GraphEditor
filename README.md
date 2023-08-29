@@ -1,6 +1,6 @@
-# GraphEditor
+# Graph Editor and Algorithm Visualizer
 ## Overview
-GraphEditor is a visual tool designed to create, manipulate, and analyze graphs. You can add vertices and edges, modify edge weights, and apply various graph traversal and pathfinding algorithms.
+A visual tool designed to create, manipulate, and analyze graphs. You can add vertices and edges, modify edge weights, and apply various graph traversal and pathfinding algorithms.
 
 ## Features
 ### 1. Graph Creation
